@@ -1,31 +1,51 @@
-import './index.css';
-import LikeButton from './components/LikeButton'
-import TaskList from './components/TaskList'
+import './App.css';
+import Header from './components/Header'
+import TaskInput from './components/TaskInput';
+import TaskList from './components/TaskList';
+import Footer from './components/Footer';
+
+
 
 const tasks = [
-  "Lavar los platos",
-  "Hacer la compra",
-  "Cocinar huevos fritos"
-]
+  { 
+    taskId: '1',
+    taskName: 'Lavar los platos',
+    done: true,
+    who: 'Jose',
+    requestedOn: '2020-01-20',
+    doneOn: '2020-01-18'
+   },
+   { 
+     taskId: '2',
+     taskName: 'Hacer la compra',
+     done: false,
+     who: 'Manuel'
+   },
+   {  
+     taskId:'3',
+     taskName: 'Revisar la clase de Victor',
+     done: true,
+     who: 'Ana'
+   },
+   {
+     taskId:'4',
+     taskName: 'Comprar mascarillas',
+     done: false,
+     who: 'Maria'
+   },
+];
+
 
 function App() {
-  
-  const handleClick = () => {
-    console.log('Clicked');
-  }
-
-  const handleChange = (event) => {
-    console.log(event.target.value);
-  }
-  
   return (
+  <div>
+    <h1>Todo List</h1>
     <div>
-      <h1>Titulo</h1>
-      <LikeButton numberLikes={2}/>     
-      <TaskList tasks={tasks}/> 
-      <button className="big-boton" onClick={handleClick}>Click me</button>
-      <input onChange={handleChange} />
+      <Header tasks={tasks} />
+      <TaskList tasks={tasks}/>
+      <Footer tasks={tasks}/>
     </div>
+  </div>
   );
 }
 
