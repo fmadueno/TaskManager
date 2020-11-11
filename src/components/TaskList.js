@@ -1,26 +1,26 @@
 import TaskItem from './TaskItem';
 
-function TaskList (props) {
-    //const items = tasks.map(title => <TaskItem title={title} />)
+function TaskList ({tasks}) {
+
+    if (tasks.length === 0){
+        return <p>No hay tareas por completar</p>
+    }
     
-    if (props.tasks.length === 0){
-        return <p>No yhay tareas por completar</p>
+    const Tasks = () => {
+
+        const taskItem = tasks.map(task => (
+            <TaskItem task={task} />
+        ));
+        return taskItem;
     }
 
-    return (
-        
-        //Opción 1
-        //<ul>
-        //    {props.tasks.map(task => <TaskItem key={task.title} title={task.title} />)}
-        //</ul>
-        <ul>
-            <TaskItem task = {props.tasks[0]}>
-                <p>Hola</p>
-                <input type = "checkbox" />
-            </TaskItem>
-        </ul>
 
-        )
+    return (
+    <ul>
+        <Tasks tasks={tasks}/>    
+    </ul>
+    );
+        
 }
 
 export default TaskList
