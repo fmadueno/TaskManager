@@ -1,20 +1,14 @@
 function Warning ({tasks}) {
 
     const amountOfNotDone = tasks.filter(task => !task.done).length;
+    //Si la cantidad de tareas not done supera este número mostrar aviso
     const overworkThreshold = 5;
 
-    const Warn = () => {
-
-        if (amountOfNotDone > overworkThreshold){
-            return <div>Cuidado tienes mucho trabajo!</div>
-        }
-        
-        return null;
-    }
-
     return(
-        <Warn />
+        <div>
+            {/* Si condición es falsa devuelve parte derecha de &&, sino devuelve falso*/ }
+            {(amountOfNotDone > overworkThreshold) && (<p className="Warning"> Cuidado tienes mucho trabajo! </p>)}
+        </div>
     )
 }
-
 export default Warning

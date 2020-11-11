@@ -5,6 +5,7 @@ function Header({tasks}){
     
     return(
         <div>
+            <h1>Todo List</h1>
             <TaskInput tasks={tasks}/>
             <Warning tasks={tasks} />
         </div>

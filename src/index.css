@@ -119,3 +119,20 @@ button:focus,
 span:focus {
   outline: none;
 }
+
+.Warning {
+    background: #e2b2b2;
+    padding: 8px;
+    border: 2px solid #c76c6c;
+    border-radius: 5px;
+}
+
+.TaskAvatar {
+  border-radius: 5000px;
+  width: 40px;
+  height: 40px;
+}
+
+.TaskText {
+  flex-grow: 1;
+}
