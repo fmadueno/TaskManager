@@ -1,26 +1,18 @@
 import TaskItem from './TaskItem';
 
+
 function TaskList ({tasks}) {
-
     if (tasks.length === 0){
-        return <p>No hay tareas por completar</p>
+        return <p>No tasks in this page</p>
     }
-    
-    const Tasks = () => {
-
-        const taskItem = tasks.map(task => (
-            <TaskItem task={task} />
-        ));
-        return taskItem;
-    }
-
 
     return (
     <ul>
-        <Tasks tasks={tasks}/>    
+        {tasks.map(task => (
+            <TaskItem task={task} />
+        ))
+        }
     </ul>
     );
-        
 }
-
 export default TaskList

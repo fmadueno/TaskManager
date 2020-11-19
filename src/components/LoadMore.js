@@ -1,7 +1,8 @@
-function LoadMore({tasks}){
+import React from "react";
+
+function LoadMore(){
     
-    
-return( 
+return(
     <button>Load More</button>
 )
 

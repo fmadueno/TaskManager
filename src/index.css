@@ -84,9 +84,16 @@ li {
 
 footer {
   display: flex;
+  flex-flow: column;
   justify-content: space-between;
   align-items: baseline;
   margin-top: 32px;
+}
+
+footer > * {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 li:hover > span {

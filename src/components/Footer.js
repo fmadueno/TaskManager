@@ -1,14 +1,22 @@
+import React from "react";
 import TaskCounter from './TaskCounter'
 import LoadMore from './LoadMore'
 import Pagination from './Pagination'
 
-function Footer({tasks, page, pages}){
-    
+
+function Footer({tasks, pagination}){
     return(
         <footer>
-            <TaskCounter tasks={tasks} />
-            <LoadMore tasks={tasks} />
-            <Pagination page={page} pages={pages} />
+            <div>
+                <TaskCounter page={pagination.page} leftToComplete={tasks.leftToComplete} />
+                <LoadMore />
+            </div>
+
+            <Pagination pagination={pagination}/>
+
+            <div>
+                <button type="button">Clear all</button>
+            </div>
         </footer>
     )
 }

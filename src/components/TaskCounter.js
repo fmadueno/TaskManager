@@ -1,11 +1,7 @@
-function TaskCounter({tasks}){
-
-    let amountOfNotDone = tasks.filter(task => !task.done).length;
+function TaskCounter({page, leftToComplete}){
 
     return(
-        <div>
-            <strong>{amountOfNotDone} tasks left of {tasks.length} </strong>
-        </div>
+        <strong>{leftToComplete} tasks left of {page} </strong>
     )
 }
 
