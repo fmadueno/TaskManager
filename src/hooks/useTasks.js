@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import data from "../tasks.json";
 
 const pageSize = 10;  //tasks displayed per page
@@ -8,7 +8,7 @@ const getLastId = (tasks) => {
                                             tasks[0].taskId);
 }
 
-export const useTasks = () => {
+const useTaskState = () => {
     //useStates
     const [taskId, setTaskId] = useState(getLastId(data.tasks)+1);    //Max id from task list
     const [tasks, setTasks] = useState(data.tasks);           //Initial tasks
@@ -94,4 +94,20 @@ export const useTasks = () => {
             reset: () => paginationReset
             }
     }
+};
+
+const TaskContext = createContext();
+
+//It permits all useState inside our App.js being shared. The state is shared between all useStates.
+//Each componente that needs the shared state, will import and use useTasks.
+export const TaskContextProvider = ({ children }) => {
+    const taskState = useTaskState();
+    return (<TaskContext.Provider value={taskState}>
+        {children}
+    </TaskContext.Provider>)
+}
+
+//Each time we call useTasks, returns the context defined inside the context which is defined in value={taskState}
+export const useTasks = () => {
+     return useContext(TaskContext);
 };

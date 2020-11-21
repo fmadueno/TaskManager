@@ -1,11 +1,13 @@
-function Warning ({tasks}) {
+import {useTasks} from "../hooks/useTasks";
 
-    //Si la cantidad de tareas not done supera este número mostrar aviso
+function Warning () {
+    //Display warning if not done tasks is over overworkThreshold
     const overworkThreshold = 5;
+    const { tasks } = useTasks();
 
     return(
         <div>
-            {/* Si condición es falsa devuelve parte derecha de &&, sino devuelve falso*/ }
+            {/* If condition is false returns right side of condition, else return false*/ }
             {(tasks.leftToComplete > overworkThreshold) && (<p className="Warning"> Cuidado tienes mucho trabajo! </p>)}
         </div>
     )

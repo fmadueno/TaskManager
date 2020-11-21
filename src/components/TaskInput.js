@@ -1,6 +1,8 @@
 import React from "react";
+import {useTasks} from "../hooks/useTasks";
 
-function TaskInput({tasks}){
+function TaskInput(){
+    const { tasks } = useTasks();
     return (
         <div>
             <input placeholder="Comprar leche" onKeyPress={e => {

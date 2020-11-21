@@ -2,8 +2,10 @@ import React from "react";
 import TaskSearch from "./TaskSearch";
 import TaskInput from './TaskInput'
 import Warning from './Warning'
+import {useTasks} from "../hooks/useTasks";
 
-function Header({tasks, search}){
+function Header(){
+    const { tasks, search } = useTasks();
 
     return(
         <section>

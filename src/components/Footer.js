@@ -1,8 +1,9 @@
 import React from "react";
 import Pagination from './Pagination'
+import { useTasks } from "../hooks/useTasks";
 
-function Footer({tasks, pagination}){
-
+function Footer() {
+    const { tasks } = useTasks();
     return(
         <footer>
             <div>
@@ -17,7 +18,7 @@ function Footer({tasks, pagination}){
                 <button type="button" onClick={tasks.markAllAsDone}>Mark all as done</button>
             </div>
 
-            <Pagination pagination={pagination}/>
+            <Pagination />
 
         </footer>
     )

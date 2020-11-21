@@ -1,7 +1,10 @@
 import TaskItem from './TaskItem';
+import {useTasks} from "../hooks/useTasks";
 
 
-function TaskList ({tasks}) {
+function TaskList () {
+    const { tasks } = useTasks();
+
     if (tasks.pageTasks.length === 0){
         return <p>No tasks in this page</p>
     }
@@ -9,8 +12,7 @@ function TaskList ({tasks}) {
     return (
     <ul>
         {tasks.pageTasks.map(task => (      //display page Tasks
-            /*<TaskItem task={task} taskList={tasks.taskList} setTasks={tasks.setTasks}/>*/
-            <TaskItem task={task} tasks={tasks}/>
+            <TaskItem task={task}/>
         ))
         }
     </ul>

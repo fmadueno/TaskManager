@@ -1,16 +1,17 @@
 import React from 'react';
+import {useTasks} from "../hooks/useTasks";
 
-function TaskSearch({search}){
-
+function TaskSearch(){
+    const { search } = useTasks();
     return (
         <div>
             <input placeholder="Search here" onKeyPress={e =>
-            {   //Hace que la búsqueda se haga sólo si pulsamos Enter.
+            {   //Search if we click Enter
                 if (e.code === "Enter") {
                     search.doSearch(e.target.value);
                 }
             }}/>
-            {/*Si queremos que la búsqueda se haga en cada carácter insertado en el campo search*/}
+            {/*Use if we want search be typed character per character  in search field*/}
             {/*<input placeholder="Search here" value={search} onChange={e => handleSearch(e.target.value)}/>*/}
         </div>
     );

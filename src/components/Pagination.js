@@ -1,6 +1,8 @@
 import React from 'react';
+import {useTasks} from "../hooks/useTasks";
 
-function Pagination({pagination}){
+function Pagination(){
+    const { pagination } = useTasks();
 
     return(
         <div>

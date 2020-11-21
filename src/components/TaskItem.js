@@ -1,4 +1,8 @@
-function TaskItem ({task, tasks}) {
+import {useTasks} from "../hooks/useTasks";
+
+function TaskItem ({task}) {
+
+    const { tasks } = useTasks();
 
     const handleDoneOfTasks = () => {
         //console.log(task);
