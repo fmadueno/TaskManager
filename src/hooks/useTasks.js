@@ -3,27 +3,77 @@ import data from "../tasks.json";
 
 const pageSize = 10;  //tasks displayed per page
 
-export const useTasks = () => {
-    const [tasks, setTasks] = useState(data.tasks);
-    const [page, setPage] = useState(0);
-    const [search, setSearch] = useState("");
-    const matchingTasks = tasks.filter(task => task.taskName.toLowerCase().includes(search.toLowerCase()));
+const getLastId = (tasks) => {
+    return tasks.reduce((max, task) => (task.taskId > max ? task.taskId : max),
+                                            tasks[0].taskId);
+}
 
-    const lastPage = Math.ceil(matchingTasks.length / pageSize);
-    const pageTasks = matchingTasks.slice (page * pageSize, (page + 1) * pageSize);
-    const leftToComplete = tasks.filter(task => !task.done).length;
+export const useTasks = () => {
+    //useStates
+    const [taskId, setTaskId] = useState(getLastId(data.tasks)+1);    //Max id from task list
+    const [tasks, setTasks] = useState(data.tasks);           //Initial tasks
+    const [search, setSearch] = useState("");       //User filter
+    const [page, setPage] = useState(0);            //Current page displayed
+
+    //Operaciones
+    const matchingTasks = tasks.filter(task => task.taskName.toLowerCase().includes(search.toLowerCase())); //Tasks with user search applied
+    const lastPage = Math.ceil(matchingTasks.length / pageSize);  //Total pages after applying user search
+    const pageTasks = matchingTasks.slice (page * pageSize, (page + 1) * pageSize); //Tasks displayed in current page. User first search, then we paginate.
+    const leftToComplete = tasks.filter(task => !task.done).length;  //Total pending tasks
+
+    const cleanDone = () => {
+        const tasksToKeep = tasks.filter(task => !task.done);
+        setTasks(tasksToKeep);
+    }
+
+    const markAllAsDone = () => {
+        const tasksDone = tasks.map(task => ({...task, done: true}))
+        setTasks([...tasksDone]);
+    }
+
+    const addTask = (taskName) => {
+        const task = { taskId, done:false, taskName};
+        setTasks([task, ...tasks]);
+        setTaskId(taskId + 1);
+    }
+
+    const deleteTask = (id) => {
+        const tasksToKeep = tasks.filter(t => t.taskId !== id)
+        setTasks (tasksToKeep);     //It's not necessary use [...tasksToKeep] because filter returns a new array so react render
+        //setTasks ([...tasksToKeep]);
+    }
+
+    const paginationReset = () => {
+        setPage(0);
+    }
+
+    const toggleDoneOfTask = (id) => {
+        const task = tasks.find((t) => t.taskId === id); //find the task with this id in the array of tasks
+        task.done = !task.done;                          //change the completed of that task
+        setTasks([...tasks]);                      //notify react that the array of tasks has change, so it will render it again ("[...]")
+    }
+
+    const doSearch = (text) => {
+        setSearch(text);
+        paginationReset();        //reset page
+    }
 
     return {
         search: {
-            value: search,
-            setSearch,
+             doSearch: doSearch,
         },
         tasks: {
             leftToComplete,
+            totalTasks: tasks.length,
             taskList: tasks,
             matchingTasks,
             pageTasks,
-            setTasks,
+            //setTasks,         No hace falta publicarlo
+            cleanDone,
+            markAllAsDone,
+            addTask,
+            deleteTask,
+            toggleDoneOfTask
         },
         pagination: {
             pageSize,
@@ -41,7 +91,7 @@ export const useTasks = () => {
                     setPage(page - 1);
                 }
             },
-            reset: () => setPage(0)
-        }
+            reset: () => paginationReset
+            }
     }
 };

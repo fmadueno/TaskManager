@@ -1,12 +1,13 @@
-function TaskInput(props){
+import React from "react";
+
+function TaskInput({tasks}){
     return (
         <div>
-            <label>
-            What do you want to do today?
-            <br/>
-            <input type="text" name="inputTask" id="inputTask"/>
-            </label>
-            <br/><br/>
+            <input placeholder="Comprar leche" onKeyPress={e => {
+                if (e.code === 'Enter') {
+                    tasks.addTask(e.target.value);
+                }
+            }} />
         </div>
     )
 }

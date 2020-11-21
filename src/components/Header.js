@@ -3,16 +3,13 @@ import TaskSearch from "./TaskSearch";
 import TaskInput from './TaskInput'
 import Warning from './Warning'
 
-function Header(props){
-    const tasks = props.tasks;
-    const setSearch = props.setSearch;
-    const resetPagination = props.resetPagination;
-    
+function Header({tasks, search}){
+
     return(
         <section>
             <h1>Todo List</h1>
-            <TaskSearch setSearch={setSearch} resetPagination={resetPagination}/>
-            <TaskInput tasks={tasks}/>
+            <TaskSearch search={search}/>
+            <TaskInput tasks={tasks} setTasks={tasks.setTasks}/>
             <Warning tasks={tasks} />
         </section>
     )

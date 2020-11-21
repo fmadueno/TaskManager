@@ -2,14 +2,15 @@ import TaskItem from './TaskItem';
 
 
 function TaskList ({tasks}) {
-    if (tasks.length === 0){
+    if (tasks.pageTasks.length === 0){
         return <p>No tasks in this page</p>
     }
 
     return (
     <ul>
-        {tasks.map(task => (
-            <TaskItem task={task} />
+        {tasks.pageTasks.map(task => (      //display page Tasks
+            /*<TaskItem task={task} taskList={tasks.taskList} setTasks={tasks.setTasks}/>*/
+            <TaskItem task={task} tasks={tasks}/>
         ))
         }
     </ul>

@@ -1,18 +1,32 @@
-function TaskItem ({task}) {
+function TaskItem ({task, tasks}) {
+
+    const handleDoneOfTasks = () => {
+        //console.log(task);
+        tasks.toggleDoneOfTask(task.taskId);
+    }
+
+    const handleDeleteTask = () => {
+        tasks.deleteTask (task.taskId);
+    }
+
+    const handleCloneTask = () => {
+        tasks.addTask (task.taskName);
+    }
 
     return (
         <li>
-            <input type="checkbox" id={task.taskId} name={task.taskId} checked={task.done}/>
+
+            <input type="checkbox" id={task.taskId} name={task.taskId}
+                   checked={task.done}
+                   onClick={handleDoneOfTasks}/>
             <label className="TaskText"> {task.taskName} </label>
             {/*{task.imageUrl && <img className="TaskAvatar" src={task.imageUrl}/>};*/}
             <span>
-                {/*<button onClick={() => {setTasks([...tasks, {}])}}>Clone</button>*/}
-                {/*<button onClick={() => {setTasks([])}}>X</button>*/}
-                <button>Clone</button>
-                <button>X</button>
+                <button onClick={handleCloneTask}>Clone</button>
+                <button onClick={handleDeleteTask}>X</button>
             </span>
         </li>
-        )
+    )
 }
 
 export default TaskItem
