@@ -3,9 +3,10 @@ import {useTasks} from "../hooks/useTasks";
 
 function TaskSearch(){
     const { search } = useTasks();
+
     return (
         <div>
-            <input placeholder="Search here" onKeyPress={e =>
+            <input placeholder={search.text || 'Search here'} onKeyPress={e =>
             {   //Search if we click Enter
                 if (e.code === "Enter") {
                     search.doSearch(e.target.value);

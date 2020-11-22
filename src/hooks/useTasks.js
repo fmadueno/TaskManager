@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import data from "../tasks.json";
 
 const pageSize = 10;  //tasks displayed per page
@@ -11,11 +11,11 @@ const getLastId = (tasks) => {
 const useTaskState = () => {
     //useStates
     const [taskId, setTaskId] = useState(getLastId(data.tasks)+1);    //Max id from task list
-    const [tasks, setTasks] = useState(data.tasks);           //Initial tasks
-    const [search, setSearch] = useState("");       //User filter
-    const [page, setPage] = useState(0);            //Current page displayed
+    const [tasks, setTasks] = useState(data.tasks);                 //Initial tasks
+    const [search, setSearch] = useState(localStorage.getItem("search") || "");    //User filter
+    const [page, setPage] = useState(0);                  //Current page displayed
 
-    //Operaciones
+    //Operations
     const matchingTasks = tasks.filter(task => task.taskName.toLowerCase().includes(search.toLowerCase())); //Tasks with user search applied
     const lastPage = Math.ceil(matchingTasks.length / pageSize);  //Total pages after applying user search
     const pageTasks = matchingTasks.slice (page * pageSize, (page + 1) * pageSize); //Tasks displayed in current page. User first search, then we paginate.
@@ -58,9 +58,21 @@ const useTaskState = () => {
         paginationReset();        //reset page
     }
 
+    //useEffects
+    //Display page title
+    useEffect(() => {
+        document.title = `You have ${leftToComplete} tasks to complete`;
+    },[leftToComplete]);
+
+    //Stores the text of search each new search
+    useEffect(() => {
+        localStorage.setItem('search', String(search));
+    }, [search]);
+
     return {
         search: {
-             doSearch: doSearch,
+            doSearch: doSearch,
+            text: search
         },
         tasks: {
             leftToComplete,
@@ -68,7 +80,7 @@ const useTaskState = () => {
             taskList: tasks,
             matchingTasks,
             pageTasks,
-            //setTasks,         No hace falta publicarlo
+            //setTasks,         No need to publish
             cleanDone,
             markAllAsDone,
             addTask,
