@@ -1,29 +1,27 @@
 import {useTasks} from "../hooks/useTasks";
+import React from "react";
 
 function TaskItem ({task}) {
-
     const { tasks } = useTasks();
 
     const handleDoneOfTasks = () => {
-        //console.log(task);
-        tasks.toggleDoneOfTask(task.taskId);
+        tasks.toggleDoneOfTask(task.id);
     }
 
     const handleDeleteTask = () => {
-        tasks.deleteTask (task.taskId);
+        tasks.deleteTask (task.id);
     }
 
     const handleCloneTask = () => {
-        tasks.addTask (task.taskName);
+        tasks.addTask (task.title);
     }
 
     return (
-        <li>
-
-            <input type="checkbox" id={task.taskId} name={task.taskId}
-                   checked={task.done}
-                   onClick={handleDoneOfTasks}/>
-            <label className="TaskText"> {task.taskName} </label>
+        <li key={task.id.toString()}>
+            <input type="checkbox"
+                   checked={task.completed}
+                   onChange={handleDoneOfTasks}/>
+            <label className="TaskText"> {task.title} </label>
             {/*{task.imageUrl && <img className="TaskAvatar" src={task.imageUrl}/>};*/}
             <span>
                 <button onClick={handleCloneTask}>Clone</button>

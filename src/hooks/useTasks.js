@@ -1,44 +1,54 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import data from "../tasks.json";
 
 const pageSize = 10;  //tasks displayed per page
 
+// Requests URL
+async function request(url) {
+    const response = await fetch(url);
+    return response.json();
+}
+
+
+async function getTasks() {
+    return request("https://jsonplaceholder.typicode.com/todos");
+}
+
 const getLastId = (tasks) => {
-    return tasks.reduce((max, task) => (task.taskId > max ? task.taskId : max),
-                                            tasks[0].taskId);
+    return tasks.reduce((max, task) => (task.id > max ? task.id : max),0);
 }
 
 const useTaskState = () => {
     //useStates
-    const [taskId, setTaskId] = useState(getLastId(data.tasks)+1);    //Max id from task list
-    const [tasks, setTasks] = useState(data.tasks);                 //Initial tasks
+    const [tasks, setTasks] = useState([]);                 //Initial tasks
+    const [id, setId] = useState(getLastId(tasks) + 1);    //Max id from task list
     const [search, setSearch] = useState(localStorage.getItem("search") || "");    //User filter
     const [page, setPage] = useState(0);                  //Current page displayed
 
     //Operations
-    const matchingTasks = tasks.filter(task => task.taskName.toLowerCase().includes(search.toLowerCase())); //Tasks with user search applied
+    const matchingTasks = tasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase())); //Tasks with user search applied
     const lastPage = Math.ceil(matchingTasks.length / pageSize);  //Total pages after applying user search
     const pageTasks = matchingTasks.slice (page * pageSize, (page + 1) * pageSize); //Tasks displayed in current page. User first search, then we paginate.
-    const leftToComplete = tasks.filter(task => !task.done).length;  //Total pending tasks
+    const leftToComplete = tasks.filter(task => !task.completed).length;  //Total pending tasks
 
     const cleanDone = () => {
-        const tasksToKeep = tasks.filter(task => !task.done);
+        const tasksToKeep = tasks.filter(task => !task.completed);
         setTasks(tasksToKeep);
     }
 
     const markAllAsDone = () => {
-        const tasksDone = tasks.map(task => ({...task, done: true}))
+        const tasksDone = tasks.map(task => ({...task, completed: true}))
         setTasks([...tasksDone]);
     }
 
-    const addTask = (taskName) => {
-        const task = { taskId, done:false, taskName};
+    const addTask = (title) => {
+        const task = { id, completed:false, title};
         setTasks([task, ...tasks]);
-        setTaskId(taskId + 1);
+        //setTaskId(taskId + 1);
+        setId(id + 1);
     }
 
     const deleteTask = (id) => {
-        const tasksToKeep = tasks.filter(t => t.taskId !== id)
+        const tasksToKeep = tasks.filter(t => t.id !== id)
         setTasks (tasksToKeep);     //It's not necessary use [...tasksToKeep] because filter returns a new array so react render
         //setTasks ([...tasksToKeep]);
     }
@@ -48,8 +58,8 @@ const useTaskState = () => {
     }
 
     const toggleDoneOfTask = (id) => {
-        const task = tasks.find((t) => t.taskId === id); //find the task with this id in the array of tasks
-        task.done = !task.done;                          //change the completed of that task
+        const task = tasks.find((t) => t.id === id); //find the task with this id in the array of tasks
+        task.completed = !task.completed;                          //change the completed of that task
         setTasks([...tasks]);                      //notify react that the array of tasks has change, so it will render it again ("[...]")
     }
 
@@ -68,6 +78,13 @@ const useTaskState = () => {
     useEffect(() => {
         localStorage.setItem('search', String(search));
     }, [search]);
+
+    //Get the task list
+    useEffect(() => {
+            getTasks().then((newTasks) => {
+                setTasks(newTasks);
+            });
+    }, []);
 
     return {
         search: {
